@@ -27,7 +27,7 @@ function formateDate(date){
 }
 
 test("1) Formatar data ",()=>{
-    expect(()=>{formateDate("2020/31/10")}).toBe("10/31/2020")
+    expect(formateDate("2020/31/10").toBe("31/10/2020")
 })
 
 
