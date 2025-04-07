@@ -1,34 +1,34 @@
 // Exercício 01 -> Crie um função que recebe uma data e a converte no formato DD/MM/AAAA.
 
-function transformDate(stringPattern, value){
-    let formatedDate = [];
+function formateDate(date){
+    var formatedDate = []
 
-    for(let k= 0;k<2;k++){
-        formatedDate.push(value[stringPattern.indexOf("D")+k])
+    date = date.split("/")
+    date.forEach((element)=>{
+
+    if(Number(element)<0){throw new Error("Dados não válidos")}    
+
+    if(element.length==4){
+        formatedDate[2] = element
     }
-    formatedDate.push("/")
-    for(let j= 0;j<2;j++){
-        formatedDate.push(value[stringPattern.indexOf("M")+j])
+    else if((element.length==2 && Number(element)<=12) && formatedDate[1] == undefined){
+        formatedDate[1] = element
     }
-    formatedDate.push("/")
-    for(let i= 0;i<4;i++){
-        formatedDate.push(value[stringPattern.indexOf("Y")+i])
+    else if(element.length==2 && Number(element)<=31){
+        formatedDate[0] = element
+    }
+    else {
+        throw new Error("Dados não válidos")
     }
 
-    let regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    })
 
-    if (!regex.test(formatedDate.join(""))) {
-        throw new Error("Formatação não ocorreu corretamente")
-    }
-
-    return formatedDate.join("");
+    return formatedDate.join("/")
 }
 
-test("1) Formatação da data", ()=>{
-    expect(()=>{transformDate("YYYYMMDD","20201011")}).not.toThrow("Formatação não ocorreu corretamente")
+test("1) Formatar data ",()=>{
+    expect(()=>{formateDate("2020/31/10")}).toBe("10/31/2020")
 })
-
-
 
 
 
@@ -93,8 +93,11 @@ function verifyEmail(email){
     return success;
 }
 
-test("3) Verificar e-mails", ()=>{
+test("3) Verificar e-mails (Correto)", ()=>{
     expect(verifyEmail("garfield@outlook.com")).toBe("Email válido!")
+})
+test("3.1) Verificar e-mails (Errado)", ()=>{
+    expect(verifyEmail("garfield.com")).toBe("Email válido!")
 })
 
 
@@ -118,7 +121,7 @@ function dateDifference(date1, date2) {
     return diferencaDias;
   }
   
-test("4) Diferença de datas em dias",()=>{
+test("4) Diferença de datas em dias (Correto)",()=>{
     expect(dateDifference("20/03/2000","20/04/2000")).toBe(31)
 })
 
@@ -137,7 +140,7 @@ function sumOfTwoNumbersFromArray(numbersArrays,n){
             let firstNumber = numbersArrays[i]
             let secondNumber = numbersArrays[j]
 
-            if(firstNumber + secondNumber === n && firstNumber != secondNumber){
+            if(firstNumber + secondNumber === n && i!=j){
                 return `${firstNumber} + ${secondNumber} = ${n}`;
             }
         }
@@ -145,8 +148,11 @@ function sumOfTwoNumbersFromArray(numbersArrays,n){
     throw new Error("No valid pair")
 }
 
-test("5) Soma de dois números num array",()=>{
+test("5) Soma de dois números num array (Correto)",()=>{
     expect(()=>{sumOfTwoNumbersFromArray([3,5,8,2,6,4], 10)}).not.toThrow("No valid pair")
+})
+test("5.1) Soma de dois números num array (Errado)",()=>{
+    expect(()=>{sumOfTwoNumbersFromArray([3,5], 10)}).not.toThrow("No valid pair")
 })
 
 
@@ -171,8 +177,11 @@ function validatePassword(password) {
     return hasLowerCase && hasNumber && hasSpecialCharacters && hasUpperCase; // Verifica se todos são verdadeiros
 }
 
-test("6) Validar senha",()=>{
+test("6) Validar senha (Correto)",()=>{
     expect(validatePassword("Password123!")).toBeTruthy()
+})
+test("6.1) Validar senha (Errado)",()=>{
+    expect(validatePassword("pas123!")).toBeTruthy()
 })
 
 
@@ -207,8 +216,13 @@ function verifyProduct(product){
     return "Valid Product"
 }
 
-let product = new Product("meu tio","chiquinho sorvetes",10,12)
+let product1 = new Product("casquinha","chiquinho sorvetes",10,12)
+let product2 = new Product("macarrao","bmw",10,8)
 
-test("7) Verificar Produto",()=>{
-    expect(verifyProduct(product)).toBe("Valid Product")
+test("7) Verificar Produto (Correto)",()=>{
+    expect(verifyProduct(product1)).toBe("Valid Product")
 })
+test("7.1) Verificar Produto (Errado)",()=>{
+    expect(verifyProduct(product2)).toBe("Valid Product")
+})
+
